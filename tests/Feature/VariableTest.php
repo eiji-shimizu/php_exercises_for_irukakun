@@ -8,6 +8,16 @@ use Tests\TestCase;
 
 class VariableTest extends TestCase
 {
+    public function passByValIncriment($num)
+    {
+        ++$num;
+    }
+
+    public function passByRefIncriment(&$num)
+    {
+        ++$num;
+    }
+
     /**
      * @test test001
      *
@@ -90,5 +100,55 @@ class VariableTest extends TestCase
         $this->assertEquals($numberA, 41);
         $this->assertEquals($numberB, 41);
         $this->assertEquals($numberC, 2);
+    }
+
+    /**
+     * @test test006
+     *
+     * @return void
+     */
+    public function test006()
+    {
+        $numberA = 1;
+        $numberB = $numberA;
+        $numberC = $numberB;
+        $numberB = $numberB + 39;
+        $numberC = $numberC * 3;
+        $numberA++;
+        $this->assertEquals($numberA, 2);
+        $this->assertEquals($numberB, 40);
+        $this->assertEquals($numberC, 3);
+
+        $this->passByValIncriment($numberA);
+        $this->passByValIncriment($numberB);
+        $this->passByValIncriment($numberC);
+        $this->assertEquals($numberA, 2);
+        $this->assertEquals($numberB, 40);
+        $this->assertEquals($numberC, 3);
+    }
+
+    /**
+     * @test test007
+     *
+     * @return void
+     */
+    public function test007()
+    {
+        $numberA = 1;
+        $numberB = $numberA;
+        $numberC = $numberB;
+        $numberB = $numberB + 39;
+        $numberC = $numberC * 3;
+        $numberA++;
+        $this->assertEquals($numberA, 2);
+        $this->assertEquals($numberB, 40);
+        $this->assertEquals($numberC, 3);
+
+        $this->passByRefIncriment($numberA);
+        $this->passByRefIncriment($numberB);
+        $this->passByRefIncriment($numberC);
+        $this->assertEquals($numberA, 3);
+        $this->assertEquals($numberB, 41);
+        $this->assertEquals($numberC, 4);
     }
 }
