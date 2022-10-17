@@ -62,4 +62,82 @@ class ExceptionTest extends TestCase
             $this->assertNull($e->getPrevious()->getPrevious());
         }
     }
+
+    /**
+     * @test test004
+     *
+     * @return void
+     */
+    public function test004()
+    {
+        try {
+            throw new \LogicException('ロジックエラー');
+        } catch (\Exception $e) {
+            $this->assertEquals($e->getMessage(), 'ロジックエラー');
+        } catch (\LogicException $e) {
+            // 上に書かれたcatchであてはまるものがあればそこで処理される
+            // 従ってここには来ない
+            $this->assertTrue(false);
+        }
+    }
+
+    /**
+     * @test test005
+     *
+     * @return void
+     */
+    public function test005()
+    {
+        try {
+            throw new \LogicException('ロジックエラー');
+        } catch (\LogicException $e) {
+            $this->assertEquals($e->getMessage(), 'ロジックエラー');
+        } catch (\Exception $e) {
+            // 上に書かれたcatchであてはまるものがあればそこで処理される
+            // 従ってここには来ない
+            $this->assertTrue(false);
+        }
+    }
+
+    /**
+     * @test test006
+     *
+     * @return void
+     */
+    public function test006()
+    {
+        try {
+            throw new \LogicException('ロジックエラー');
+        } catch (\RuntimeException $e) {
+            // ここには来ない
+            $this->assertTrue(false);
+        } catch (\LogicException $e) {
+            $this->assertEquals($e->getMessage(), 'ロジックエラー');
+        } catch (\Exception $e) {
+            // 上に書かれたcatchであてはまるものがあればそこで処理される
+            // 従ってここには来ない
+            $this->assertTrue(false);
+        }
+    }
+
+    /**
+     * @test test007
+     *
+     * @return void
+     */
+    public function test007()
+    {
+        try {
+            throw new \RuntimeException('ランタイムエラー');
+        } catch (\LogicException $e) {
+            // ここには来ない
+            $this->assertTrue(false);
+        } catch (\RuntimeException $e) {
+            $this->assertEquals($e->getMessage(), 'ランタイムエラー');
+        } catch (\Exception $e) {
+            // 上に書かれたcatchであてはまるものがあればそこで処理される
+            // 従ってここには来ない
+            $this->assertTrue(false);
+        }
+    }
 }
