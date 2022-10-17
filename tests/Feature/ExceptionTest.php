@@ -140,4 +140,32 @@ class ExceptionTest extends TestCase
             $this->assertTrue(false);
         }
     }
+
+    /**
+     * @test test008
+     *
+     * @return void
+     */
+    public function test008()
+    {
+        try {
+            throw new \RuntimeException('ランタイムエラー');
+        } catch (\LogicException | \RuntimeException $e) {
+            $this->assertEquals($e->getMessage(), 'ランタイムエラー');
+        }
+    }
+
+    /**
+     * @test test009
+     *
+     * @return void
+     */
+    public function test009()
+    {
+        try {
+            throw new \LogicException('ロジックエラー');
+        } catch (\LogicException | \RuntimeException $e) {
+            $this->assertEquals($e->getMessage(), 'ロジックエラー');
+        }
+    }
 }
